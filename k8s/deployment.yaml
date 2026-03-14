@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: testci
+  name: testci
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: testci
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: testci
+    spec:
+      containers:
+      - image: logx1/testci:v1
+        name: testci
+        resources: {}
+status: {}

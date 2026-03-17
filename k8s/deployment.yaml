@@ -18,7 +18,7 @@ spec:
         app: testci
     spec:
       containers:
-        - image: logx1/testci:${GITHUB_SHA::7}
+        - image: 'logx1/testci:'
           name: testci
           resources: {}
 status: {}

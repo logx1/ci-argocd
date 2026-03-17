@@ -30,7 +30,8 @@ jobs:
     - name: Update image in deployment.yaml
       run: |
         yq -i '.spec.template.spec.containers[0].image = "logx1/testci:${GITHUB_SHA::7}"' ./k8s/deployment.yaml
-        - name: Configure Git
+
+    - name: Configure Git
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -39,6 +40,4 @@ jobs:
       run: |
         git add ./k8s/deployment.yaml
         git commit -m "Update image tag in deployment.yaml" || echo "No changes to commit"
-      #   git push
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git push

@@ -18,3 +18,9 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push Docker image
       run: docker push logx1/testci:${GITHUB_SHA::7}
+      run: |
+        sudo wget -O /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+        sudo chmod +x /usr/bin/yq
+    - name: Update image in deployment.yaml
+      run: |
+        yq -i '.spec.template.spec.containers[0].image = "logx1/testci:${GITHUB_SHA::7}"' ./k8s/deployment.yaml

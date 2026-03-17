@@ -13,6 +13,17 @@ jobs:
     - name: Build the Docker image
       run: docker build -t logx1/testci:${GITHUB_SHA::7} ./image
 
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget
+        wget -qO- https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.50.1_Linux-64bit.deb > trivy.deb
+        sudo dpkg -i trivy.deb
+
+    - name: Scan Docker image with Trivy
+      run: |
+        trivy image --exit-code 1 --severity HIGH,CRITICAL logx1/testci:${GITHUB_SHA::7}
+
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:

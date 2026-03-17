@@ -29,7 +29,7 @@ jobs:
 
     - name: Update image in deployment.yaml
       run: |
-        yq -i '.spec.template.spec.containers[0].image = "logx1/testci:${GITHUB_SHA::7}"' ./k8s/deployment.yaml
+        yq -i ".spec.template.spec.containers[0].image = \"logx1/testci:${SHORT_SHA}\"" ./k8s/deployment.yaml
 
     - name: Configure Git
       run: |

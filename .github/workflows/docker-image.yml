@@ -14,13 +14,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set short SHA
+      id: vars
+      run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
     - name: Build the Docker image
-      run: docker build -t logx1/testci:${GITHUB_SHA::7} ./image
+      run: docker build -t logx1/testci:${SHORT_SHA} ./image
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@v0.19.0
       with:
-        image-ref: 'logx1/testci:${{ GITHUB_SHA::7 }}'
+        image-ref: 'logx1/testci:${{ env.SHORT_SHA }}'
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
@@ -34,9 +38,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push Docker image
-      run: docker push logx1/testci:${GITHUB_SHA::7}
-
-  
+      run: docker push logx1/testci:${SHORT_SHA}
 
     - name: Install yq
       run: |
@@ -45,7 +47,7 @@ jobs:
 
     - name: Update image in deployment.yaml
       run: |
-        yq -i '.spec.template.spec.containers[0].image = "logx1/testci:'"${GITHUB_SHA::7}"'"' ./k8s/deployment.yaml
+        yq -i '.spec.template.spec.containers[0].image = "logx1/testci:'"${SHORT_SHA}"'"' ./k8s/deployment.yaml
 
     - name: Configure Git
       run: |

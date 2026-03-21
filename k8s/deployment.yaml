@@ -18,7 +18,7 @@ spec:
         app: testci
     spec:
       containers:
-        - image: 'logx1/testci:145b000'
+        - image: 'logx1/testci:997940e'
           name: testci
           resources: {}
 status: {}

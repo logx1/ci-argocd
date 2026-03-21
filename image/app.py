@@ -16,7 +16,7 @@ async def read_root():
             margin-top: 50px;
           }
           body {
-            background: black;
+            background: #f4f4f4;
           }
         </style>
       </head>

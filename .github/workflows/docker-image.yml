@@ -14,6 +14,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r ./image/requirements.txt
+
+    - name: Check Python dependencies for vulnerabilities
+      run: |
+        pip install pip-audit
+        pip-audit -r ./image/requirements.txt
+
+    - name: Lint app.py with flake8
+      run: |
+        pip install flake8
+        flake8 ./image/app.py --max-line-length=120
+
     - name: Set short SHA
       id: vars
       run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV

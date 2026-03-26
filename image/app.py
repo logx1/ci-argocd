@@ -12,7 +12,7 @@ async def read_root():
       <head>
         <style>
           h1 {
-            color: #3498db;
+            color: green;
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
